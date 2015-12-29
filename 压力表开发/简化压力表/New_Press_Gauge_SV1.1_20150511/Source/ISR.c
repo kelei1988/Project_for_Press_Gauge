@@ -10,16 +10,16 @@
 __interrupt void ADC12ISR (void)
 {
     static uchar index =  0;
-    static uchar index2 = 0;
-    static uchar index3 = 0;
-    static uchar index4 = 0;   
-    static uchar index5 = 0;
+   // static uchar index2 = 0;
+   // static uchar index3 = 0;
+   // static uchar index4 = 0;   
+   // static uchar index5 = 0;
     
     static uchar zd_index =  0;
-    static uchar zd_index2 = 0;
-    static uchar zd_index3 = 0;
-    static uchar zd_index4 = 0;   
-    static uchar zd_index5 = 0;
+    //static uchar zd_index2 = 0;
+    //static uchar zd_index3 = 0;
+    //static uchar zd_index4 = 0;   
+    //static uchar zd_index5 = 0;
     
     P1OUT &=0x1f;                    //P1.5-P1.7（数码管位选） 
     P2OUT = SEG[DispBuf[cnt-5]];     //输出段选信号
@@ -37,13 +37,14 @@ __interrupt void ADC12ISR (void)
           Results[index++] = ADC12MEM0;   // Move results, IFG is cleared
           if(index == 10)
           {
-              index = 0; 
-              Results1[index2++] = average_fun(Results,0,9);                      // Move results, IFG is cleared
-              if(index2 == 5)                  
+              index = 0;
+              pingjun = average_fun(Results,0,9);  
+              //Results1[index2++] = average_fun(Results,0,49);                      // Move results, IFG is cleared
+              /*if(index2 == 5)                  
               {
                   index2 = 0;
                   pingjun = average_fun(Results1,0,4);                      // Move results, IFG is cleared
-              }      
+              } */     
           }
     }
     else if ( zhengding_enble==1)
@@ -52,13 +53,14 @@ __interrupt void ADC12ISR (void)
           if(zd_index == 10)
           {
               zd_index = 0;   
-              zd_Results1[zd_index2++] = average_fun(zd_Results,0,9);                      // Move results, IFG is cleared
+              average_zd= average_fun(zd_Results,0,9);  
+              /*zd_Results1[zd_index2++] = average_fun(zd_Results,0,49);                      // Move results, IFG is cleared
               if(zd_index2 == 5)                  
               {
                   zd_index2 = 0;
                   average_zd = average_fun(zd_Results1,0,4);                      // Move results, IFG is cleared
                   zd_ad++; 
-              }        
+              }*/        
           }
     }
     
