@@ -1,0 +1,56 @@
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+*.log
+*.dep
+*.ewd
+*.bat
+*.dbgdt
+*.dni
+*.wsdt
+*.pbi
+*.pbd
+*.r43
+*.cout
+*.browse
+*.SchDocPreview
+*.PcbDocPreview
+*.Dat
+*.PcbDoc.Zip
+*.Zip
+*.rar
+*.a43
+*.d43
+*.sfr
+*.xml
+*.wspos
+*.PrjPCBStructure
+
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+
+# Debug files
+*.dSYM/

@@ -1,0 +1,8 @@
+1、New_Press_Gauge_SV1.23_20150117_1.txt
+修改了微小变化界限8-->5.
+
+2、New_Press_Gauge_SV1.23_20150117_2.txt
+修改了微小变化界限5-->3.
+
+3、New_Press_Gauge_SV1.23_20150117_3
+   修正了微小变化范围内10次取样后计算得到新的数值，未被保存为新的last_ad_value的bug；
