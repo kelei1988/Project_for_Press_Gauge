@@ -9,17 +9,74 @@
 #pragma vector=ADC_VECTOR
 __interrupt void ADC12ISR (void)
 {
-    static uchar index =  0;
-   // static uchar index2 = 0;
-   // static uchar index3 = 0;
-   // static uchar index4 = 0;   
-   // static uchar index5 = 0;
+  unsigned long sample_adc12;
+  static unsigned int  Sample_count_q;
+  static unsigned long Sample_value_q;
+  static unsigned long Average_q;
+  static unsigned long Sample_value;
+  //static unsigned int  Sample_count;
+  unsigned int ad_sample_count;
+  ad_sample_count=1024;
+  P1OUT &=0x1f;                    //P1.5-P1.7（数码管位选） 
+    P2OUT = SEG[DispBuf[cnt-5]];     //输出段选信号
+    P1OUT |= (1 << cnt);  
+       cnt++;                        //位计数变量在1~3之间循环
+    if(cnt == 8) cnt = 5;
+    WDTCTL = WDTPW+WDTCNTCL;
+    time_count0++;
+    if(time_count0>1024)
+    {
+       time_count0=0;
+       secure1=0;
+    }
     
-    static uchar zd_index =  0;
-    //static uchar zd_index2 = 0;
-    //static uchar zd_index3 = 0;
-    //static uchar zd_index4 = 0;   
-    //static uchar zd_index5 = 0;
+  sample_adc12=ADC12MEM0;
+  if(Sample_count_q<128) 
+  {
+    Sample_value_q= Sample_value_q + sample_adc12;
+    Sample_count_q++;
+  }
+  else
+  {
+    Average_q=Sample_value_q/128;//计算得到 快速实际数值
+    Sample_count_q=0;
+    Sample_value_q=0;
+  }
+
+  if(((Average_q>Average)&&(Average_q-Average>300))
+    || ((Average_q<Average)&&(Average-Average_q>300)))//比较数值 数值变化超过范围则快速响应
+  {
+   Average=Average_q;
+   Sample_value=0;
+   Sample_count=0;
+   if( zhengding_enble==1)
+    {
+      zd_ad++; 
+    }
+  }
+  else
+  {
+    if(Sample_count<ad_sample_count)
+    {
+       Sample_value= Sample_value + sample_adc12;
+       Sample_count++;
+    }
+    if(Sample_count>=ad_sample_count)
+    { 
+       Average = Sample_value/ad_sample_count;          
+       Sample_count=0;
+       Sample_value=0; 
+       if( zhengding_enble==1)
+       {
+          zd_ad++; 
+       }     
+    }      
+  }
+  
+  
+  
+  
+   /* static uchar index =  0;
     
     P1OUT &=0x1f;                    //P1.5-P1.7（数码管位选） 
     P2OUT = SEG[DispBuf[cnt-5]];     //输出段选信号
@@ -32,26 +89,18 @@ __interrupt void ADC12ISR (void)
        time_count0=0;
        secure1=0;
     }
-    if( zhengding_enble==0)
-    {    
+          if(index<100)
           Results[index++] = ADC12MEM0;   // Move results, IFG is cleared
-          if(index == Sample_Speed*10)
+          if(index == 50)
           {
               index = 0;
-              pingjun = average_fun(Results,0,Sample_Speed*10-1);       
-          }
-    }
-    else if ( zhengding_enble==1)
-    {
-          zd_Results[zd_index++] = ADC12MEM0;   // Move results, IFG is cleared
-          if(zd_index == 10)
-          {
-              zd_index = 0;   
-              average_zd= average_fun(zd_Results,0,9);
-              zd_ad++;         
-          }
-    }
-    
+              pingjun = average_fun(Results,0,49);
+              if( zhengding_enble==1)
+              {
+                   zd_ad++; 
+                   average_zd= pingjun;
+              }
+          }*/   
 }
 /*******************************************
 函数名称：PORT1_ISR 
@@ -93,9 +142,9 @@ __interrupt void  PORT1_ISR(void)
                                      danwei_label++;
                                      if(danwei_label>3)
                                        danwei_label=1;
-                                     keypad_Read_Setting_FormFlash();
-                                     VIP_setting[0] = danwei_label;
-                                     keypad_Write_Setting_To_Flash();
+                                     //keypad_Read_Setting_FormFlash();
+                                     //VIP_setting[0] = danwei_label;
+                                     //keypad_Write_Setting_To_Flash();
                                   }
                                   if(c==8062)
                                   {
@@ -209,6 +258,7 @@ __interrupt void  PORT1_ISR(void)
 __interrupt void Timer_B(void)
 {
     Sample_Speed_Count++;            //虚拟显示速度
+    
     P1OUT &=0x1f;                    //P1.5-P1.7（数码管位选） 
     P2OUT = SEG[DispBuf[cnt-5]];     //输出段选信号
     P1OUT |= (1 << cnt);  

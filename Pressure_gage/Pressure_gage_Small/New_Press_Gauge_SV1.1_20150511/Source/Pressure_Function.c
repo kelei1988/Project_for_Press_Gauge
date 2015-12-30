@@ -15,9 +15,9 @@ void Pressure_Calibrate()
      xianshi_shuzi(i);
    key_value = 0x00;
    zd_ad=0;
-   while(zd_ad!=2)
+   while(zd_ad<2)
    {};
-   AD[i] =average_zd; 
+   AD[i] =Average; 
    i++;
   }
     P5OUT|=BIT2;
@@ -62,13 +62,15 @@ void Display_Pressure()
     int i=0;
     if(Sample_Speed_Count>10)//虚拟显示速度
     {
-      Average=pingjun;
+      //Average=pingjun;
       Sample_Speed_Count=0;
     }    
                                //运算得到PSI数值
     if(danwei_label_f!=danwei_label)
     {
       danwei_label_f=danwei_label;
+      VIP_setting[0] = danwei_label;
+      VIP_setting[16] = danwei_label_f;
       keypad_Write_Setting_To_Flash();
     }
     if(Average>AD[0]) 

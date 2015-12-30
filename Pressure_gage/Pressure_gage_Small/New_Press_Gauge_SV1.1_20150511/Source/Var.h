@@ -6,8 +6,8 @@ extern uint z_flag;
 extern unsigned long  Mpa,PSI,Kgcm2;
 
 extern uchar SEG[32];
-
-extern uint Results[32],Results1[32],Results2[32],Results3[32],Results4[32],cal_pingjun[32]; //
+extern uint Results[100];
+extern uint Results1[32],Results2[32],Results3[32],Results4[32],cal_pingjun[32]; //
 extern uint zd_Results[32],zd_Results1[32],zd_Results2[32],zd_Results3[32],zd_Results4[32]; //
 
 extern long Average,Average0,Average1,Average2,pingjun,Last_pingjun,average_zd;//用于对ad的计算。
@@ -37,4 +37,5 @@ extern uint Sample_Speed;
 extern uint Correct_Press_Flag; //整体漂移修正时的中间变量
 extern uint Correct_Press_Staus;
 extern uint Sample_Speed_Count;//虚拟显示速度
+extern uint Sample_count;//  
 #endif

@@ -527,22 +527,7 @@ __interrupt void ADC12ISR (void)
     { 
        Average = Sample_value/ad_sample_count;          
        Sample_count=0;
-       Sample_value=0;
-      /* Cal_Average = Sample_value/ad_sample_count;   
-          Sample_count=0;
-          Sample_value=0;
-          Last_Average2=Last_Average1;
-          Last_Average1=Last_Average;
-          Last_Average=Cal_Average; 
-          if((Last_Average>Average
-             &&Last_Average1>Average
-             &&Last_Average>Average)
-             ||(Last_Average<Average
-             &&Last_Average1<Average
-             &&Last_Average<Average))
-          {
-             Average=(Last_Average+Last_Average1+Last_Average2)/3;
-          }  */       
+       Sample_value=0;      
     }      
   }
       
