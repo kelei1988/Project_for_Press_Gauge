@@ -24,10 +24,15 @@ void main( void )
       time_count0=0;
       time_count1=0;
       Correct_Press_Staus=0;
+      if(Sample_Speed>9||Sample_Speed==0)
+      {
+        Sample_Speed =1;
+      }
+      
       while(1)
       { 
           WDTCTL = WDTPW+WDTCNTCL;//  清除看门狗
-          Sample_Speed =1;
+          
           switch(Status)
           {
             case 0x00:Display_Pressure();break;   //显示压力

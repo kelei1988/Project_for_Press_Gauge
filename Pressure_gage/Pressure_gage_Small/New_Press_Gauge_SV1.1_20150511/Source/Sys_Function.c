@@ -88,12 +88,15 @@ void Correct_Zero_Value()
         P5OUT|=BIT6;
         P5OUT|=BIT7; 
         zd_ad=0;
-        while(zd_ad!=1)
+        while(zd_ad<2)
         {}; 
-        while(key_value!=0x11)//按中间按键，单位压力递增0.05
-        AD[0] =average_zd+5; key_value=0;     
-        if(AD[0]>=AD[1])AD[0]=AD[1]-1;
-         zhengding_enble=0;
+        while(key_value!=0x11)
+        AD[0] =Average;
+        key_value=0;     
+        if(AD[0]>=AD[1])
+          AD[0]=AD[1]-1;
+        
+        zhengding_enble=0;
         VIP_setting[0] = danwei_label;
         //VIP_setting[1]=shangxian;
         //VIP_setting[2]=xiaxian;   
