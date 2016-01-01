@@ -16,7 +16,7 @@ __interrupt void ADC12ISR (void)
   static unsigned long Sample_value;
   //static unsigned int  Sample_count;
   unsigned int ad_sample_count;
-  ad_sample_count=1024;
+  ad_sample_count=Sample_Speed*1024;
   P1OUT &=0x1f;                    //P1.5-P1.7（数码管位选） 
     P2OUT = SEG[DispBuf[cnt-5]];     //输出段选信号
     P1OUT |= (1 << cnt);  
@@ -31,14 +31,14 @@ __interrupt void ADC12ISR (void)
     }
     
   sample_adc12=ADC12MEM0;
-  if(Sample_count_q<128) 
+  if(Sample_count_q<512) 
   {
     Sample_value_q= Sample_value_q + sample_adc12;
     Sample_count_q++;
   }
   else
   {
-    Average_q=Sample_value_q/128;//计算得到 快速实际数值
+    Average_q=Sample_value_q/512;//计算得到 快速实际数值
     Sample_count_q=0;
     Sample_value_q=0;
   }
