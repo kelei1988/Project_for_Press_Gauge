@@ -445,32 +445,7 @@ void Init_AD()      //初始化AD口
     ADC12CTL0 |= ENC;                         // Enable conversions
     ADC12CTL0 |= ADC12SC;                     // Start conversion
 }
-/*******************************************
-函数名称：ADC12ISR
-功    能：ADC12的中断服务函数
-参    数：无
-返回值  ：无
-********************************************/
-/*  if(sample_adc12_1>Average && sample_adc12_1-Average>300)
-  {
-    sample_adc12=sample_adc12_1;
-  }
-  else if(sample_adc12_1<Average && Average-sample_adc12_1>300)
-  {
-     sample_adc12=sample_adc12_1;
-  }
-  else if(sample_adc12_1>Average && sample_adc12_1-Average>50)
-  {
-    sample_adc12=Average+50;
-  }
-  else if(sample_adc12_1<Average && Average-sample_adc12_1>50)
-  {
-     sample_adc12=Average-50;
-  }
-  else
-  {
-    sample_adc12 =Average;
-  }*/
+
 #pragma vector=ADC_VECTOR
 __interrupt void ADC12ISR (void)
 {     
@@ -496,7 +471,7 @@ __interrupt void ADC12ISR (void)
    Sample_count=0;
   }
   else
-  {/**/
+  {
     if(Sample_count<ad_sample_count)
     {
        Sample_value= Sample_value + sample_adc12;
@@ -507,22 +482,7 @@ __interrupt void ADC12ISR (void)
     { 
        Average = Sample_value/ad_sample_count;          
        Sample_count=0;
-       Sample_value=0;
-      /* Cal_Average = Sample_value/ad_sample_count;   
-          Sample_count=0;
-          Sample_value=0;
-          Last_Average2=Last_Average1;
-          Last_Average1=Last_Average;
-          Last_Average=Cal_Average; 
-          if((Last_Average>Average
-             &&Last_Average1>Average
-             &&Last_Average>Average)
-             ||(Last_Average<Average
-             &&Last_Average1<Average
-             &&Last_Average<Average))
-          {
-             Average=(Last_Average+Last_Average1+Last_Average2)/3;
-          }  */       
+       Sample_value=0;      
     }      
   }
       
@@ -831,6 +791,15 @@ void Init_SYS()
      }     while((IFG1 & OFIFG));    
      BCSCTL2|=SELM_2; 
      
+  
+     /*BCSCTL1 |= XT2OFF;//设置外部高速时钟（8M Hz）关闭
+     do
+     {
+       IFG1 &=~OFIFG;
+       for (i=0xff;i>0;i--);
+     }     
+     while((IFG1 & OFIFG));*/    
+     //BCSCTL2|=SELM_2;
     TBCCTL0 = CCIE;//使能CCIFG标志产生的中断
     TBCCR0 = 500;//（试验了一下，这句不加也可以）
     TBCTL = TBSSEL_2 + MC_2;//选择timer时钟和模式    
